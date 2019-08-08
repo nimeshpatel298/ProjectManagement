@@ -1,0 +1,102 @@
+<div class="container" style="text-align:left;">
+  <div class="page-header"><h3>Add User</h3></div>
+  <form [formGroup]="angularForm" novalidate>
+    <div class="form-group row">
+      <label for="firstName" class="col-sm-2 col-form-label">First Name:</label>
+      <div class="col-sm-6">
+        <input *ngIf="false" type="text" class="form-control" [(ngModel)]="user.UserId" formControlName="userId" >
+        <input type="text" class="form-control" [(ngModel)]="user.FirstName" formControlName="firstName" placeholder="First Name">
+      </div>
+    </div>
+    <div *ngIf="angularForm.controls['firstName'].invalid && (angularForm.controls['firstName'].dirty || angularForm.controls['firstName'].touched)" class="alert alert-danger">
+        <div *ngIf="angularForm.controls['firstName'].errors.required">
+          First Name is required.
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="lastName" class="col-sm-2 col-form-label">Last Name:</label>
+      <div class="col-sm-6">
+        <input type="text" [(ngModel)]="user.LastName" class="form-control" formControlName="lastName" placeholder="Last Name">
+      </div>
+    </div>
+    <div *ngIf="angularForm.controls['lastName'].invalid && (angularForm.controls['lastName'].dirty || angularForm.controls['lastName'].touched)" class="alert alert-danger">
+        <div *ngIf="angularForm.controls['lastName'].errors.required">
+          Last Name is required.
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="employeeId" class="col-sm-2 col-form-label">Employee ID:</label>
+      <div class="col-sm-6">
+        <input type="text" [(ngModel)]="user.EmployeeId" class="form-control" formControlName="employeeId" placeholder="Employee ID">
+      </div>
+    </div>
+    <div *ngIf="angularForm.controls['employeeId'].invalid && (angularForm.controls['employeeId'].dirty || angularForm.controls['employeeId'].touched)" class="alert alert-danger">
+        <div *ngIf="angularForm.controls['employeeId'].errors.required">
+          Employee ID is required.
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-6"></div>
+      <div class="col-sm-6">
+      <button type="submit" (click)="createUser(user)" class="btn btn-primary btn-space"
+      [disabled]="angularForm.invalid">{{operation}}</button>
+      <button type="reset" class="btn btn-primary">Reset</button>
+    </div>
+  </div>
+
+  </form>
+</div>
+
+<div class="container" style="text-align:left;">
+  <div class="row">
+    <div class="col-sm-9">
+      <hr style="color: blue;"/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-9">
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="searchText" class="form-control" id="search" placeholder="Search...">
+      </div>
+      <!-- <div class="col-sm-1 font-bold"></div> -->
+      
+      <div class="col-sm-2 font-bold">Sort By:</div>
+      <button type="submit" class="btn btn-space" (click)="onSortFirstName()">First Name</button>
+      <button type="submit" class="btn btn-space" (click)="onSortLastName()">Last Name</button>
+      <button type="submit" class="btn btn-space" (click)="onSortId()">ID</button>
+    </div>
+  </div>
+
+  <div class="row" >
+    <div class="col-sm-9" >
+        <div  class="list-group" style="margin-top: 10px;"  >
+            <div class="list-group-item" *ngFor="let user of (userList|searchUser:searchText)">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <div class="row">
+                            <div class="col-sm-8">First Name : {{user.FirstName}}</div>
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-1"><button (click)="updateUser(user)" type="submit" class="btn btn-primary btn-size">Edit</button></div>
+                        </div>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-sm-8">Last Name : {{user.LastName}}</div>
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-1"><button (click)="deleteUser(user.UserId)" type="submit" class="btn btn-primary btn-size">Delete</button></div>
+                        </div>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-sm-8">Employee ID : {{user.EmployeeId}}</div>
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  </div>
+</div>
