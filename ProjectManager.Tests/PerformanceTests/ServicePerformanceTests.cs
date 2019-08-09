@@ -14,11 +14,17 @@ namespace ProjectManager.Tests.PerformanceTests
     {
         private Counter _counter;
         readonly ProjectManagerController controller = null;
+        readonly TaskController taskController = null;
+        readonly ParentTaskController parentTaskController = null;
+        readonly UserController userController = null;
 
         public ServicePerformanceTests()
         {
             var service = this.Configure();
             controller = new ProjectManagerController(service.Object);
+            taskController = new TaskController(service.Object);
+            parentTaskController = new ParentTaskController(service.Object);
+            userController = new UserController(service.Object);
         }
 
         [PerfSetup]
@@ -32,7 +38,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_GetAllTasks_Then_ShouldReturnAllTasks_Iterations()
         {
-            var result = controller.GetAllTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
+            var result = taskController.GetAllTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
             Assert.IsNotNull(result);
         }
 
@@ -40,7 +46,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_GetAllTasks_Then_ShouldReturnAllTasks_Throughput()
         {
-            var result = controller.GetAllTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
+            var result = taskController.GetAllTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
             Assert.IsNotNull(result);
         }
 
@@ -49,7 +55,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_GetAllParentTasks_Then_ShouldReturnAllTasks_Iterations()
         {
-            var result = controller.GetAllParentTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
+            var result = parentTaskController.GetAllParentTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
             Assert.IsNotNull(result);
         }
 
@@ -57,7 +63,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_GetAllParentTasks_Then_ShouldReturnAllTasks_Throughput()
         {
-            var result = controller.GetAllParentTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
+            var result = parentTaskController.GetAllParentTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
             Assert.IsNotNull(result);
         }
 
@@ -83,7 +89,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_GetAllUsers_Then_VerifyResults_Iteartions()
         {
-            var result = controller.GetAllUsers() as OkNegotiatedContentResult<List<UserEntity>>;
+            var result = userController.GetAllUsers() as OkNegotiatedContentResult<List<UserEntity>>;
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Content.Count, 1);
         }
@@ -92,7 +98,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_GetAllUsers_Then_VerifyResults_Throughput()
         {
-            var result = controller.GetAllUsers() as OkNegotiatedContentResult<List<UserEntity>>;
+            var result = userController.GetAllUsers() as OkNegotiatedContentResult<List<UserEntity>>;
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Content.Count, 1);
         }
@@ -102,7 +108,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_GetUserById_Then_VerifyResults_Iterations()
         {
-            var result = controller.GetUserById(1) as OkNegotiatedContentResult<UserEntity>;
+            var result = userController.GetUserById(1) as OkNegotiatedContentResult<UserEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -110,7 +116,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_GetUserById_Then_VerifyResults_Throughput()
         {
-            var result = controller.GetUserById(1) as OkNegotiatedContentResult<UserEntity>;
+            var result = userController.GetUserById(1) as OkNegotiatedContentResult<UserEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -135,7 +141,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_GetTaskById_Then_VerifyResults_Iterations()
         {
-            var result = controller.GetTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
+            var result = taskController.GetTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -143,7 +149,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_GetTaskById_Then_VerifyResults_Throughput()
         {
-            var result = controller.GetTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
+            var result = taskController.GetTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -152,14 +158,14 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_GetParentTaskById_Then_VerifyResults_Iterations()
         {
-            var result = controller.GetParentTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
+            var result = parentTaskController.GetParentTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
             Assert.IsNotNull(result);
         }
 
         [PerfBenchmark(RunMode = RunMode.Throughput, TestMode = TestMode.Test, SkipWarmups = true)]
         public void When_GetParentTaskById_Then_VerifyResults_Throughput()
         {
-            var result = controller.GetParentTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
+            var result = parentTaskController.GetParentTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -169,7 +175,7 @@ namespace ProjectManager.Tests.PerformanceTests
         public void When_AddUser_Then_VerifyResults_Iterations()
         {
             var user = TestDataHelper.GetUser().Map();
-            var result = controller.CreateUser(user);
+            var result = userController.CreateUser(user);
             Assert.NotNull(result);
         }
 
@@ -178,7 +184,7 @@ namespace ProjectManager.Tests.PerformanceTests
         public void When_AddUser_Then_VerifyResults_Throughput()
         {
             var user = TestDataHelper.GetUser().Map();
-            var result = controller.CreateUser(user);
+            var result = userController.CreateUser(user);
             Assert.NotNull(result);
         }
 
@@ -206,7 +212,7 @@ namespace ProjectManager.Tests.PerformanceTests
         public void When_AddTask_Then_VerifyResults_Iterations()
         {
             var project = TestDataHelper.GetTask().Map();
-            var result = controller.AddTask(project);
+            var result = taskController.AddTask(project);
             Assert.NotNull(result);
         }
 
@@ -215,7 +221,7 @@ namespace ProjectManager.Tests.PerformanceTests
         public void When_AddTask_Then_VerifyResults_Throughput()
         {
             var project = TestDataHelper.GetTask().Map();
-            var result = controller.AddTask(project);
+            var result = taskController.AddTask(project);
             Assert.NotNull(result);
         }
 
@@ -225,7 +231,7 @@ namespace ProjectManager.Tests.PerformanceTests
         public void When_AddParentTask_Then_VerifyResults_Iterations()
         {
             var project = TestDataHelper.GetTask().Map();
-            var result = controller.AddParentTask(project);
+            var result = parentTaskController.AddParentTask(project);
             Assert.NotNull(result);
         }
 
@@ -233,7 +239,7 @@ namespace ProjectManager.Tests.PerformanceTests
         public void When_AddParentTask_Then_VerifyResults_Throughput()
         {
             var project = TestDataHelper.GetTask().Map();
-            var result = controller.AddParentTask(project);
+            var result = parentTaskController.AddParentTask(project);
             Assert.NotNull(result);
         }
 
@@ -244,7 +250,7 @@ namespace ProjectManager.Tests.PerformanceTests
         {
             var project = TestDataHelper.GetTask().Map();
             project.TaskId = 10;
-            var result = controller.UpdateTask(project);
+            var result = taskController.UpdateTask(project);
             Assert.NotNull(result);
         }
 
@@ -254,7 +260,7 @@ namespace ProjectManager.Tests.PerformanceTests
         {
             var project = TestDataHelper.GetTask().Map();
             project.TaskId = 10;
-            var result = controller.UpdateTask(project);
+            var result = taskController.UpdateTask(project);
             Assert.NotNull(result);
         }
 
@@ -263,14 +269,14 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_EndTask_Then_VerifyResults_Iterations()
         {
-            var result = controller.EndTask(10);
+            var result = taskController.EndTask(10);
             Assert.NotNull(result);
         }
 
         [PerfBenchmark(RunMode = RunMode.Throughput, TestMode = TestMode.Test, SkipWarmups = true)]
         public void When_EndTask_Then_VerifyResults_Throughput()
         {
-            var result = controller.EndTask(10);
+            var result = taskController.EndTask(10);
             Assert.NotNull(result);
         }
 
@@ -313,7 +319,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_DeleteUser_Then_VerifyResults()
         {
-            var result = controller.DeleteUser(1);
+            var result = userController.DeleteUser(1);
             Assert.NotNull(result);
         }
 
@@ -321,7 +327,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_DeleteUser_Then_VerifyResults_Throughput()
         {
-            var result = controller.DeleteUser(1);
+            var result = userController.DeleteUser(1);
             Assert.NotNull(result);
         }
 
@@ -330,7 +336,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [GcMeasurement(GcMetric.TotalCollections, GcGeneration.AllGc)]
         public void When_DeleteTask_Then_VerifyResults_Iterations()
         {
-            var result = controller.DeleteTask(1);
+            var result = taskController.DeleteTask(1);
             Assert.NotNull(result);
         }
 
@@ -338,7 +344,7 @@ namespace ProjectManager.Tests.PerformanceTests
         [MemoryMeasurement(MemoryMetric.TotalBytesAllocated)]
         public void When_DeleteTask_Then_VerifyResults_Throughput()
         {
-            var result = controller.DeleteTask(1);
+            var result = taskController.DeleteTask(1);
             Assert.NotNull(result);
         }
 

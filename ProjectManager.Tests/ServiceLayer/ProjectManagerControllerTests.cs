@@ -18,16 +18,22 @@ namespace ProjectManager.Tests.ServiceLayer
     public class ProjectManagerControllerTests
     {
         readonly ProjectManagerController controller = null;
+        readonly TaskController taskController = null;
+        readonly ParentTaskController parentTaskController = null;
+        readonly UserController userController = null;
         public ProjectManagerControllerTests()
         {
             var service = this.Configure();
             controller = new ProjectManagerController(service.Object);
+            taskController = new TaskController(service.Object);
+            parentTaskController = new ParentTaskController(service.Object);
+            userController = new UserController(service.Object);
         }
 
         [Test]
         public void When_GetAllTasks_Then_ShouldReturnAllTasks()
         {
-            var result = controller.GetAllTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
+            var result = taskController.GetAllTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
             Assert.IsNotNull(result);
             //Assert.AreEqual(result.Content.Count, 2);
         }
@@ -35,7 +41,7 @@ namespace ProjectManager.Tests.ServiceLayer
         [Test]
         public void When_GetAllParentTasks_Then_ShouldReturnAllTasks()
         {
-            var result = controller.GetAllParentTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
+            var result = parentTaskController.GetAllParentTasks() as OkNegotiatedContentResult<List<TaskEntity>>;
             Assert.IsNotNull(result);
             //Assert.AreEqual(result.Content.Count, 1);
         }
@@ -51,7 +57,7 @@ namespace ProjectManager.Tests.ServiceLayer
         [Test]
         public void When_GetAllUsers_Then_VerifyResults()
         {
-            var result = controller.GetAllUsers() as OkNegotiatedContentResult<List<UserEntity>>;
+            var result = userController.GetAllUsers() as OkNegotiatedContentResult<List<UserEntity>>;
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Content.Count, 1);
         }
@@ -59,7 +65,7 @@ namespace ProjectManager.Tests.ServiceLayer
         [Test]
         public void When_GetUserById_Then_VerifyResults()
         {
-            var result = controller.GetUserById(1) as OkNegotiatedContentResult<UserEntity>;
+            var result = userController.GetUserById(1) as OkNegotiatedContentResult<UserEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -73,14 +79,14 @@ namespace ProjectManager.Tests.ServiceLayer
         [Test]
         public void When_GetTaskById_Then_VerifyResults()
         {
-            var result = controller.GetTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
+            var result = taskController.GetTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
             Assert.IsNotNull(result);
         }
 
         [Test]
         public void When_GetParentTaskById_Then_VerifyResults()
         {
-            var result = controller.GetParentTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
+            var result = parentTaskController.GetParentTaskById(1) as OkNegotiatedContentResult<TaskEntity>;
             Assert.IsNotNull(result);
         }
 
@@ -88,7 +94,7 @@ namespace ProjectManager.Tests.ServiceLayer
         public void When_AddUser_Then_VerifyResults()
         {
             var user = TestDataHelper.GetUser().Map();
-            var result = controller.CreateUser(user);
+            var result = userController.CreateUser(user);
             Assert.NotNull(result);
         }
 
@@ -104,7 +110,7 @@ namespace ProjectManager.Tests.ServiceLayer
         public void When_AddTask_Then_VerifyResults()
         {
             var project = TestDataHelper.GetTask().Map();
-            var result = controller.AddTask(project);
+            var result = taskController.AddTask(project);
             Assert.NotNull(result);
         }
 
@@ -112,7 +118,7 @@ namespace ProjectManager.Tests.ServiceLayer
         public void When_AddParentTask_Then_VerifyResults()
         {
             var project = TestDataHelper.GetTask().Map();
-            var result = controller.AddParentTask(project);
+            var result = parentTaskController.AddParentTask(project);
             Assert.NotNull(result);
         }
 
@@ -121,11 +127,11 @@ namespace ProjectManager.Tests.ServiceLayer
         {
             var project = TestDataHelper.GetTask().Map();
             project.TaskId = 10;
-            var result = controller.UpdateTask(project);
+            var result = taskController.UpdateTask(project);
             Assert.NotNull(result);
 
             project.TaskId = 0;
-            result = controller.UpdateTask(project);
+            result = taskController.UpdateTask(project);
             Assert.NotNull(result);
         }
 
@@ -134,7 +140,7 @@ namespace ProjectManager.Tests.ServiceLayer
         {
             var project = TestDataHelper.GetTask().Map();
             project.TaskId = 10;
-            var result = controller.EndTask(project.TaskId);
+            var result = taskController.EndTask(project.TaskId);
             Assert.NotNull(result);
         }
 
@@ -150,11 +156,11 @@ namespace ProjectManager.Tests.ServiceLayer
         {
             var project = TestDataHelper.GetTask().Map();
             project.TaskId = 10;
-            var result = controller.UpdateParentTask(project);
+            var result = parentTaskController.UpdateParentTask(project);
             Assert.NotNull(result);
 
             project.TaskId = 0;
-            result = controller.UpdateParentTask(project);
+            result = parentTaskController.UpdateParentTask(project);
             Assert.NotNull(result);
         }
 
@@ -162,11 +168,11 @@ namespace ProjectManager.Tests.ServiceLayer
         public void When_UpdateUser_Then_VerifyResults()
         {
             var project = TestDataHelper.GetUser().Map();
-            var result = controller.UpdateUser(project);
+            var result = userController.UpdateUser(project);
             Assert.NotNull(result);
 
             project.UserId = 0;
-            result = controller.UpdateUser(project);
+            result = userController.UpdateUser(project);
             Assert.NotNull(result);
         }
 
@@ -195,20 +201,20 @@ namespace ProjectManager.Tests.ServiceLayer
         [Test]
         public void When_DeleteUser_Then_VerifyResults()
         {
-            var result = controller.DeleteUser(1);
+            var result = userController.DeleteUser(1);
             Assert.NotNull(result);
 
-            result = controller.DeleteUser(0);
+            result = userController.DeleteUser(0);
             Assert.NotNull(result);
         }
 
         [Test]
         public void When_DeleteTask_Then_VerifyResults()
         {
-            var result = controller.DeleteTask(1);
+            var result = taskController.DeleteTask(1);
             Assert.NotNull(result);
 
-            result = controller.DeleteTask(0);
+            result = taskController.DeleteTask(0);
             Assert.NotNull(result);
         }
 
