@@ -8,7 +8,7 @@ import { User } from '../models/user';
 import { Project } from '../models/project';
 import { Task } from '../models/task';
 
-const endpoint = 'http://localhost/ProjectManager/';
+const endpoint = 'http://localhost:8081/api/';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':'application/json'
@@ -26,26 +26,26 @@ export class ProjectManagerServiceService {
   constructor(private http:HttpClient) { }
 
   getUsers(): Observable<User[]>  {
-    return this.http.get<User[]>(endpoint + 'Users/GetAll');
+    return this.http.get<User[]>(endpoint + 'User');
   }
 
   getProjects(): Observable<Project[]>  {
-    return this.http.get<Project[]>(endpoint + 'Projects/GetAll');
+    return this.http.get<Project[]>(endpoint + 'ProjectManager');
   }
 
   getParentTasks(): Observable<Task[]>  {
-    return this.http.get<Task[]>(endpoint + 'ParentTasks/GetAll');
+    return this.http.get<Task[]>(endpoint + 'ParentTask');
   }
 
   getTasks(): Observable<Task[]>  {
-    return this.http.get<Task[]>(endpoint + 'Tasks/GetAll');
+    return this.http.get<Task[]>(endpoint + 'Task');
   }
 
   createTask(task : Task) {
     let body = JSON.stringify(task);
     console.log(body);
     let returnObject = false;
-    this.http.post(endpoint + "Tasks/Create",
+    this.http.post(endpoint + "Task",
         body, httpOptions)
         .subscribe(
             data => {
@@ -64,7 +64,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(task);
     console.log(body);
     let returnObject = false;
-    this.http.post(endpoint + "ParentTasks/Create",
+    this.http.post(endpoint + "ParentTask",
         body, httpOptions)
         .subscribe(
             data => {
@@ -83,7 +83,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(task);
     console.log(body);
     let returnObject = false;
-    this.http.post(endpoint + "Users/Create",
+    this.http.post(endpoint + "User",
         body, httpOptions)
         .subscribe(
             data => {
@@ -102,7 +102,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(project);
     console.log(body);
     let returnObject = false;
-    this.http.post(endpoint + "Projects/Create",
+    this.http.post(endpoint + "ProjectManager",
         body, httpOptions)
         .subscribe(
             data => {
@@ -121,7 +121,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(task);
 
     let returnObject = false;
-    this.http.put(endpoint + "ParentTasks/Update",
+    this.http.put(endpoint + "ParentTask",
         body, httpOptions)
         .subscribe(
             data => {
@@ -140,7 +140,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(task);
 
     let returnObject = false;
-    this.http.put(endpoint + "Tasks/Update",
+    this.http.put(endpoint + "Task",
         body, httpOptions)
         .subscribe(
             data => {
@@ -159,7 +159,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(task);
 
     let returnObject = false;
-    this.http.put(endpoint + "Users/Update",
+    this.http.put(endpoint + "User",
         body, httpOptions)
         .subscribe(
             data => {
@@ -178,7 +178,7 @@ export class ProjectManagerServiceService {
     let body = JSON.stringify(task);
 
     let returnObject = false;
-    this.http.put(endpoint + "Projects/Update",
+    this.http.put(endpoint + "ProjectManager",
         body, httpOptions)
         .subscribe(
             data => {
@@ -194,20 +194,20 @@ export class ProjectManagerServiceService {
   }
 
   getUserById(id) : Observable<User> {
-    return this.http.get<User>(endpoint + 'Users/GetById/' + id);
+    return this.http.get<User>(endpoint + 'User/' + id);
   }
 
   getTaskById(id) : Observable<Task> {
-    return this.http.get<Task>(endpoint + 'Tasks/GetById/' + id);
+    return this.http.get<Task>(endpoint + 'Task/' + id);
   }
 
   getParentTaskById(id) : Observable<Task> {
-    return this.http.get<Task>(endpoint + 'ParentTasks/GetById/' + id);
+    return this.http.get<Task>(endpoint + 'ParentTask/' + id);
   }
 
   deleteUser(id)  {
     
-    this.http.delete(endpoint + "Users/Delete/" + id).subscribe(data=> {
+    this.http.delete(endpoint + "User/" + id).subscribe(data=> {
       this.serviceResponseReceived.next(true);
     });
   }
@@ -215,7 +215,7 @@ export class ProjectManagerServiceService {
   endTask(id)  {
     let returnObject = false;
     let body = JSON.stringify(id);
-    this.http.post(endpoint + "Tasks/End/" + id,
+    this.http.put(endpoint + "Task/" + id,
         body, httpOptions)
         .subscribe(
             data => {
@@ -233,7 +233,7 @@ export class ProjectManagerServiceService {
   suspendProject(id)  {
     let returnObject = false;
     let body = JSON.stringify(id);
-    this.http.post(endpoint + "Projects/Suspend/" + id,
+    this.http.post(endpoint + "Project/" + id,
         body, httpOptions)
         .subscribe(
             data => {
