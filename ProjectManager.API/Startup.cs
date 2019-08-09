@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(ProjectManager.API.Startup))]
+//[assembly: OwinStartup(typeof(ProjectManager.API.Startup))]
 
 namespace ProjectManager.API
 {
@@ -12,7 +12,7 @@ namespace ProjectManager.API
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+           // ConfigureAuth(app);
         }
     }
 }
